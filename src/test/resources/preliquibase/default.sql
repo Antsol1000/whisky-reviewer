@@ -1,0 +1,1 @@
+create schema if not exists whisky_reviewer_testing;
