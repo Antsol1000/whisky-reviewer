@@ -1,0 +1,5 @@
+CREATE TABLE brand(
+    id UUID NOT NULL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    country VARCHAR NOT NULL
+);

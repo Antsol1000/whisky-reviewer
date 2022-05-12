@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: createBrandTable
+      author: Antsol1000
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: 01-create-brand-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
