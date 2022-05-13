@@ -9,3 +9,13 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: true
             stripComments: true
+  - changeSet:
+      id: createWhiskyTable
+      author: Antsol1000
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: 02-create-whisky-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

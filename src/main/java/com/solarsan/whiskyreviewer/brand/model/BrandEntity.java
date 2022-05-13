@@ -12,7 +12,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode()
 @Entity(name = "Brand")
 @Table(name = "brand")
 public class BrandEntity {
