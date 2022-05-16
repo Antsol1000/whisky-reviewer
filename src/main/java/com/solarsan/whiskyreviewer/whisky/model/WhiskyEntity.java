@@ -3,11 +3,9 @@ package com.solarsan.whiskyreviewer.whisky.model;
 import com.solarsan.whiskyreviewer.whisky.dto.NewWhiskyDTO;
 import com.solarsan.whiskyreviewer.whisky.dto.WhiskyDTO;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -37,7 +35,7 @@ public class WhiskyEntity {
     private int age;
 
     @Column(name = "brand_id")
-    private UUID brand_id;
+    private UUID brandId;
 
     public static WhiskyEntity from(final NewWhiskyDTO dto) {
         return WhiskyEntity
@@ -58,18 +56,5 @@ public class WhiskyEntity {
                 .type(dto.getType())
                 .age(dto.getAge())
                 .build();
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        final WhiskyEntity that = (WhiskyEntity) o;
-        return id != null && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

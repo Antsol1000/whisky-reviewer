@@ -29,3 +29,13 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: true
             stripComments: true
+  - changeSet:
+      id: createReviewTable
+      author: Antsol1000
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: 04-create-review-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
