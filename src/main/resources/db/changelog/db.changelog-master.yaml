@@ -19,3 +19,13 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: true
             stripComments: true
+  - changeSet:
+      id: createReviewerTable
+      author: Antsol1000
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: 03-create-reviewer-table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
