@@ -18,10 +18,8 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Set up Gradle
-      run: chmod +x ./gradlew
     - name: Build and test with Gradle
-      run: ./gradlew clean build test
+      run: ./gradlew clean build -x test
     - name: Gradle release
       if: github.ref == 'refs/heads/master'
       run: ./gradlew release -x test
