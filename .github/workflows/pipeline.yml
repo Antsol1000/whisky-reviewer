@@ -25,7 +25,7 @@ jobs:
       run: ./gradlew release -x test
     - name: Get version
       if: github.ref == 'refs/heads/master'
-      run: echo "VERSION=$(./gradlew currentVersion)"
+      run: echo "VERSION=$(./gradlew currentVersion -q -Prelease.quiet)" >> $GITHUB_ENV
     - name: GitHub release
       if: github.ref == 'refs/heads/master'
       uses: marvinpinto/action-automatic-releases@latest
