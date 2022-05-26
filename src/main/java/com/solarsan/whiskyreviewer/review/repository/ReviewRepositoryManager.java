@@ -18,6 +18,10 @@ import java.util.UUID;
 public class ReviewRepositoryManager {
     private final ReviewRepository reviewRepository;
 
+    public ReviewEntity getEntity(final UUID id) {
+        return reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(id.toString()));
+    }
+
     public ReviewEntity save(final ReviewEntity entity) {
         return reviewRepository.save(entity);
     }
@@ -29,11 +33,15 @@ public class ReviewRepositoryManager {
     }
 
     public List<ReviewDTO> getAllForWhiskyId(final UUID whiskyId) {
-        return List.of();
+        final List<ReviewDTO> e = new ArrayList<>();
+        reviewRepository.findByWhiskyId(whiskyId).forEach(x -> e.add(ReviewDTO.from(x)));
+        return e;
     }
 
     public List<ReviewDTO> getAllForReviewerId(final UUID reviewerId) {
-        return List.of();
+        final List<ReviewDTO> e = new ArrayList<>();
+        reviewRepository.findByReviewerId(reviewerId).forEach(x -> e.add(ReviewDTO.from(x)));
+        return e;
     }
 
     public Optional<ReviewDTO> get(final UUID id) {

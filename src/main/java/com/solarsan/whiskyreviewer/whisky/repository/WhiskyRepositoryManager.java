@@ -1,8 +1,8 @@
 package com.solarsan.whiskyreviewer.whisky.repository;
 
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
-import com.solarsan.whiskyreviewer.whisky.dto.WhiskyDTO;
 import com.solarsan.whiskyreviewer.whisky.dto.NewWhiskyDTO;
+import com.solarsan.whiskyreviewer.whisky.dto.WhiskyDTO;
 import com.solarsan.whiskyreviewer.whisky.exceptions.WhiskyNotFoundException;
 import com.solarsan.whiskyreviewer.whisky.model.WhiskyEntity;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,10 @@ import java.util.UUID;
 public class WhiskyRepositoryManager {
     private final WhiskyRepository whiskyRepository;
 
+    public WhiskyEntity getEntity(final UUID id) {
+        return whiskyRepository.findById(id).orElseThrow(() -> new WhiskyNotFoundException(id.toString()));
+    }
+
     public WhiskyEntity save(final WhiskyEntity entity) {
         return whiskyRepository.save(entity);
     }
@@ -25,6 +29,12 @@ public class WhiskyRepositoryManager {
     public List<WhiskyDTO> getAll() {
         final List<WhiskyDTO> e = new ArrayList<>();
         whiskyRepository.findAll().forEach(x -> e.add(WhiskyDTO.from(x)));
+        return e;
+    }
+
+    public List<WhiskyDTO> getAllForBrand(final UUID brandId) {
+        final List<WhiskyDTO> e = new ArrayList<>();
+        whiskyRepository.findByBrandId(brandId).forEach(x -> e.add(WhiskyDTO.from(x)));
         return e;
     }
 

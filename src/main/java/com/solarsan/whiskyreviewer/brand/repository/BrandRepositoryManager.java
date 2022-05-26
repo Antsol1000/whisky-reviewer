@@ -17,6 +17,10 @@ import java.util.UUID;
 public class BrandRepositoryManager {
     private final BrandRepository brandRepository;
 
+    public BrandEntity getEntity(final UUID id) {
+        return brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException(id.toString()));
+    }
+
     public BrandEntity save(final BrandEntity entity) {
         return brandRepository.save(entity);
     }

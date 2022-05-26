@@ -1,7 +1,7 @@
 package com.solarsan.whiskyreviewer.reviewer.model;
 
-import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.dto.NewReviewerDTO;
+import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 

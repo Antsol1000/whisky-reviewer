@@ -17,6 +17,10 @@ import java.util.UUID;
 public class ReviewerRepositoryManager {
     private final ReviewerRepository reviewerRepository;
 
+    public ReviewerEntity getEntity(final UUID id) {
+        return reviewerRepository.findById(id).orElseThrow(() -> new ReviewerNotFoundException(id.toString()));
+    }
+
     public ReviewerEntity save(final ReviewerEntity entity) {
         return reviewerRepository.save(entity);
     }

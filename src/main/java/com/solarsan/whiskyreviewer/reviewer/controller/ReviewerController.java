@@ -1,8 +1,8 @@
 package com.solarsan.whiskyreviewer.reviewer.controller;
 
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
-import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.dto.NewReviewerDTO;
+import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.exceptions.ReviewerNotFoundException;
 import com.solarsan.whiskyreviewer.reviewer.service.ReviewerService;
 import lombok.AllArgsConstructor;

@@ -22,3 +22,18 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build and test with Gradle
       run: ./gradlew clean build test
+    - name: Gradle release
+      if: github.ref == 'refs/heads/master'
+      run: ./gradlew release -x test
+    - name: Get version
+      if: github.ref == 'refs/heads/master'
+      run: echo "VERSION=$(./gradlew currentVersion)"
+    - name: GitHub release
+      if: github.ref == 'refs/heads/master'
+      uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.VERSION }}"
+        prerelease: false
+        files: |
+          build/libs/*.jar

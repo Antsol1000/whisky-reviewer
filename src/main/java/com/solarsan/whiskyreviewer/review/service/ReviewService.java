@@ -1,5 +1,6 @@
 package com.solarsan.whiskyreviewer.review.service;
 
+import com.solarsan.whiskyreviewer.common.EntityFetcher;
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
 import com.solarsan.whiskyreviewer.review.dto.NewReviewDTO;
 import com.solarsan.whiskyreviewer.review.dto.ReviewDTO;
@@ -21,15 +22,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReviewService {
 
+    private final EntityFetcher entityFetcher;
     private final ReviewRepositoryManager repositoryManager;
 
     @Transactional
-    public IdResponseDTO createReview(final UUID reviewId, final NewReviewDTO dto) {
-        final ReviewerEntity reviewerEntity = ReviewerEntity.builder().build();
-        final WhiskyEntity whiskyEntity = WhiskyEntity.builder().build();
+    public IdResponseDTO createReview(final UUID reviewerId, final NewReviewDTO dto) {
+        final ReviewerEntity reviewerEntity = entityFetcher.getReviewerEntity(reviewerId);
+        final WhiskyEntity whiskyEntity = entityFetcher.getWhiskyEntity(dto.getWhiskyId());
         final ReviewEntity entity = ReviewEntity.from(reviewerEntity, whiskyEntity, dto);
         final ReviewEntity saved = repositoryManager.save(entity);
-        log.info("Created new review with id {}", saved.getId());
+        log.info("Created new review with id {} for whisky {} by reviewer {}",
+                saved.getId(), saved.getWhisky().getName(), saved.getReviewer().getName());
         return IdResponseDTO.builder().id(saved.getId()).build();
     }
 
