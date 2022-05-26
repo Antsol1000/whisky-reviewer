@@ -1,5 +1,6 @@
 package com.solarsan.whiskyreviewer.whisky.model;
 
+import com.solarsan.whiskyreviewer.brand.model.BrandEntity;
 import com.solarsan.whiskyreviewer.whisky.dto.NewWhiskyDTO;
 import com.solarsan.whiskyreviewer.whisky.dto.WhiskyDTO;
 import lombok.*;
@@ -34,16 +35,18 @@ public class WhiskyEntity {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "brand_id")
-    private UUID brandId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private BrandEntity brand;
 
-    public static WhiskyEntity from(final NewWhiskyDTO dto) {
+    public static WhiskyEntity from(final BrandEntity brand, final NewWhiskyDTO dto) {
         return WhiskyEntity
                 .builder()
                 .name(dto.getName())
                 .alcohol(dto.getAlcohol())
                 .type(dto.getType())
                 .age(dto.getAge())
+                .brand(brand)
                 .build();
     }
 

@@ -1,8 +1,7 @@
 package com.solarsan.whiskyreviewer.reviewer.repository;
 
-import com.solarsan.whiskyreviewer.common.IdResponseDTO;
-import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.dto.NewReviewerDTO;
+import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.exceptions.ReviewerNotFoundException;
 import com.solarsan.whiskyreviewer.reviewer.model.ReviewerEntity;
 import lombok.AllArgsConstructor;
@@ -32,12 +31,11 @@ public class ReviewerRepositoryManager {
         return reviewerRepository.findById(id).map(ReviewerDTO::from);
     }
 
-    public IdResponseDTO update(final UUID id, final NewReviewerDTO dto) {
+    public ReviewerEntity update(final UUID id, final NewReviewerDTO dto) {
         final ReviewerEntity entity =
                 reviewerRepository.findById(id).orElseThrow(() -> new ReviewerNotFoundException(id.toString()));
         entity.setName(dto.getName());
-        final ReviewerEntity saved = reviewerRepository.save(entity);
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return reviewerRepository.save(entity);
     }
 
     public void delete(final UUID id) {

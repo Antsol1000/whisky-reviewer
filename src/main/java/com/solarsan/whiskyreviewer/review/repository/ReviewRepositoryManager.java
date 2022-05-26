@@ -28,6 +28,14 @@ public class ReviewRepositoryManager {
         return e;
     }
 
+    public List<ReviewDTO> getAllForWhiskyId(final UUID whiskyId) {
+        return List.of();
+    }
+
+    public List<ReviewDTO> getAllForReviewerId(final UUID reviewerId) {
+        return List.of();
+    }
+
     public Optional<ReviewDTO> get(final UUID id) {
         return reviewRepository.findById(id).map(ReviewDTO::from);
     }
@@ -37,7 +45,6 @@ public class ReviewRepositoryManager {
                 reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(id.toString()));
         entity.setScore(dto.getScore());
         entity.setText(dto.getText());
-        entity.setWhiskyId(dto.getWhiskyId());
         final ReviewEntity saved = reviewRepository.save(entity);
         return IdResponseDTO.builder().id(saved.getId()).build();
     }

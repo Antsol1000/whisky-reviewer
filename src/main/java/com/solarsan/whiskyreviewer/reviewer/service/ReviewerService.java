@@ -1,8 +1,8 @@
 package com.solarsan.whiskyreviewer.reviewer.service;
 
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
-import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.dto.NewReviewerDTO;
+import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.model.ReviewerEntity;
 import com.solarsan.whiskyreviewer.reviewer.repository.ReviewerRepositoryManager;
 import lombok.AllArgsConstructor;
@@ -39,9 +39,9 @@ public class ReviewerService {
 
     @Transactional
     public IdResponseDTO updateReviewerById(final UUID id, final NewReviewerDTO reviewerDTO) {
-        final IdResponseDTO response = repositoryManager.update(id, reviewerDTO);
-        log.info("Updated reviewer with id {}", response.getId());
-        return response;
+        final ReviewerEntity updated = repositoryManager.update(id, reviewerDTO);
+        log.info("Updated reviewer with id {}", updated.getId());
+        return IdResponseDTO.builder().id(updated.getId()).build();
     }
 
     @Transactional

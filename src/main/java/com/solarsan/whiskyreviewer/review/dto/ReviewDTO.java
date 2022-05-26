@@ -12,9 +12,8 @@ public class ReviewDTO {
     UUID id;
     float score;
     String text;
-    UUID whiskyId;
 
     public static ReviewDTO from(final ReviewEntity entity) {
-        return new ReviewDTO(entity.getId(), entity.getScore(), entity.getText(), entity.getWhiskyId());
+        return new ReviewDTO(entity.getId(), entity.getScore(), entity.getText());
     }
 }

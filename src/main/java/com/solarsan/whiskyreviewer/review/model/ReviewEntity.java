@@ -2,12 +2,12 @@ package com.solarsan.whiskyreviewer.review.model;
 
 import com.solarsan.whiskyreviewer.review.dto.NewReviewDTO;
 import com.solarsan.whiskyreviewer.review.dto.ReviewDTO;
+import com.solarsan.whiskyreviewer.reviewer.model.ReviewerEntity;
+import com.solarsan.whiskyreviewer.whisky.model.WhiskyEntity;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -27,21 +27,24 @@ public class ReviewEntity {
     @Column(name = "score", nullable = false)
     private float score;
 
-    @Column(name = "text", nullable = true)
+    @Column(name = "text")
     private String text;
 
-    @Column(name = "whisky_id", nullable = false)
-    private UUID whiskyId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "whisky_id", nullable = false)
+    private WhiskyEntity whisky;
 
-    @Column(name = "reviewer_id", nullable = false)
-    private UUID reviewerId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "reviewer_id", nullable = false)
+    private ReviewerEntity reviewer;
 
-    public static ReviewEntity from(final NewReviewDTO dto) {
+    public static ReviewEntity from(final ReviewerEntity reviewer, final WhiskyEntity whisky, final NewReviewDTO dto) {
         return ReviewEntity
                 .builder()
                 .score(dto.getScore())
                 .text(dto.getText())
-                .whiskyId(dto.getWhiskyId())
+                .reviewer(reviewer)
+                .whisky(whisky)
                 .build();
     }
 
@@ -51,7 +54,6 @@ public class ReviewEntity {
                 .id(dto.getId())
                 .score(dto.getScore())
                 .text(dto.getText())
-                .whiskyId(dto.getWhiskyId())
                 .build();
     }
 }

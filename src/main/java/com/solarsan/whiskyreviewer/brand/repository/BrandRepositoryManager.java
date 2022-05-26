@@ -4,7 +4,6 @@ import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.dto.NewBrandDTO;
 import com.solarsan.whiskyreviewer.brand.exceptions.BrandNotFoundException;
 import com.solarsan.whiskyreviewer.brand.model.BrandEntity;
-import com.solarsan.whiskyreviewer.common.IdResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -32,13 +31,12 @@ public class BrandRepositoryManager {
         return brandRepository.findById(id).map(BrandDTO::from);
     }
 
-    public IdResponseDTO update(final UUID id, final NewBrandDTO dto) {
+    public BrandEntity update(final UUID id, final NewBrandDTO dto) {
         final BrandEntity entity =
                 brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException(id.toString()));
         entity.setName(dto.getName());
         entity.setCountry(dto.getCountry());
-        final BrandEntity saved = brandRepository.save(entity);
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return brandRepository.save(entity);
     }
 
     public void delete(final UUID id) {

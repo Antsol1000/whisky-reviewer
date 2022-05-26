@@ -39,9 +39,9 @@ public class BrandService {
 
     @Transactional
     public IdResponseDTO updateBrandById(final UUID id, final NewBrandDTO brandDTO) {
-        final IdResponseDTO response = repositoryManager.update(id, brandDTO);
-        log.info("Updated brand with id {}", response.getId());
-        return response;
+        final BrandEntity updated = repositoryManager.update(id, brandDTO);
+        log.info("Updated brand with id {}", updated.getId());
+        return IdResponseDTO.builder().id(updated.getId()).build();
     }
 
     @Transactional

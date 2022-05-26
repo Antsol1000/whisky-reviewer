@@ -22,9 +22,11 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping(value = "/reviews", produces = {API_1_0})
-    public ResponseEntity<IdResponseDTO> createReview(@RequestBody final NewReviewDTO reviewDto) {
-        final IdResponseDTO id = reviewService.createReview(reviewDto);
+    @PostMapping(value = "/reviewer/{reviewer_id}/reviews", produces = {API_1_0})
+    public ResponseEntity<IdResponseDTO> createReview(
+            @PathVariable("reviewer_id") final UUID reviewerId,
+            @RequestBody final NewReviewDTO reviewDto) {
+        final IdResponseDTO id = reviewService.createReview(reviewerId, reviewDto);
         return ResponseEntity.created(URI.create(String.format("/reviews/%s", id.getId()))).body(id);
     }
 
@@ -32,6 +34,20 @@ public class ReviewController {
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDTO> getReviews() {
         return reviewService.getReviews();
+    }
+
+    @GetMapping(value = "/whisky/{whisky_id}/reviews", produces = {API_1_0})
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewDTO> getReviewsForWhisky(
+            @PathVariable("whisky_id") final UUID whiskyId) {
+        return reviewService.getReviewsForWhisky(whiskyId);
+    }
+
+    @GetMapping(value = "/reviewer/{reviewer_id}/reviews", produces = {API_1_0})
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewDTO> getReviewsForReviewer(
+            @PathVariable("reviewer_id") final UUID reviewerId) {
+        return reviewService.getReviewsForReviewer(reviewerId);
     }
 
     @GetMapping(value = "/reviews/{id}", produces = {API_1_0})
