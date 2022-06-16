@@ -19,7 +19,11 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build and test with Gradle
-      run: ./gradlew clean build -x test
+      run: ./gradlew clean build
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      with:
+        files: "target/surefire-reports/**/*.xml"
     - name: Gradle release
       if: github.ref == 'refs/heads/master'
       run: ./gradlew release -x test
@@ -31,7 +35,7 @@ jobs:
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ env.VERSION }}"
+        automatic_release_tag: "v${{ env.VERSION }}"
         prerelease: false
         files: |
           build/libs/*.jar
