@@ -3,9 +3,11 @@ package com.solarsan.whiskyreviewer.reviewer.model;
 import com.solarsan.whiskyreviewer.reviewer.dto.NewReviewerDTO;
 import com.solarsan.whiskyreviewer.reviewer.dto.ReviewerDTO;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Data
@@ -17,8 +19,6 @@ import java.util.UUID;
 public class ReviewerEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -26,7 +26,7 @@ public class ReviewerEntity {
     private String name;
 
     public static ReviewerEntity from(final NewReviewerDTO dto) {
-        return ReviewerEntity.builder().name(dto.getName()).build();
+        return ReviewerEntity.builder().id(UUID.randomUUID()).name(dto.getName()).build();
     }
 
     public static ReviewerEntity from(final ReviewerDTO dto) {

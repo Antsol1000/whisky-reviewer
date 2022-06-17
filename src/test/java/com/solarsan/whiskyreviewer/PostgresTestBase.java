@@ -2,25 +2,27 @@ package com.solarsan.whiskyreviewer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Arrays;
 import java.util.List;
 
 @DataJpaTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = WhiskyReviewerApplication.class,
         initializers = PostgresTestBase.CustomInitializer.class)
+@ComponentScan(basePackages = "com.solarsan.whiskyreviewer")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class PostgresTestBase {
 
@@ -42,7 +44,7 @@ public abstract class PostgresTestBase {
                 jdbcTemplate.update(String.format("delete from %s;", table)));
     }
 
-    static class CustomInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+    public static class CustomInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(final ConfigurableApplicationContext applicationContext) {
             if (Arrays.stream(applicationContext.getEnvironment().getActiveProfiles())

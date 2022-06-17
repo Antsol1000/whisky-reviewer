@@ -4,7 +4,6 @@ import com.solarsan.whiskyreviewer.brand.model.BrandEntity;
 import com.solarsan.whiskyreviewer.whisky.dto.NewWhiskyDTO;
 import com.solarsan.whiskyreviewer.whisky.dto.WhiskyDTO;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -18,8 +17,6 @@ import java.util.UUID;
 public class WhiskyEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -42,6 +39,7 @@ public class WhiskyEntity {
     public static WhiskyEntity from(final BrandEntity brand, final NewWhiskyDTO dto) {
         return WhiskyEntity
                 .builder()
+                .id(UUID.randomUUID())
                 .name(dto.getName())
                 .alcohol(dto.getAlcohol())
                 .type(dto.getType())

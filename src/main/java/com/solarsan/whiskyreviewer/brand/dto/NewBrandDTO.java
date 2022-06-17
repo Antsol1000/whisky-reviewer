@@ -7,7 +7,7 @@ import lombok.Value;
 
 @Value
 @Builder
-@JsonDeserialize(builder = BrandDTO.BrandDTOBuilder.class)
+@JsonDeserialize(builder = NewBrandDTO.NewBrandDTOBuilder.class)
 public class NewBrandDTO {
 
     @JsonProperty("name")

@@ -3,9 +3,11 @@ package com.solarsan.whiskyreviewer.brand.model;
 import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.dto.NewBrandDTO;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Data
@@ -17,8 +19,6 @@ import java.util.UUID;
 public class BrandEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -29,7 +29,7 @@ public class BrandEntity {
     private String country;
 
     public static BrandEntity from(final NewBrandDTO dto) {
-        return BrandEntity.builder().name(dto.getName()).country(dto.getCountry()).build();
+        return BrandEntity.builder().id(UUID.randomUUID()).name(dto.getName()).country(dto.getCountry()).build();
     }
 
     public static BrandEntity from(final BrandDTO dto) {

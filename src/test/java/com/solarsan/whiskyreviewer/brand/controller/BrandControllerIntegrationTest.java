@@ -9,6 +9,7 @@ class BrandControllerIntegrationTest extends PostgresTestBase {
 
     @Test
     void brandIntegrationTest() {
+        // TODO
         assertTrue(true);
     }
 

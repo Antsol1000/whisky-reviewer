@@ -5,7 +5,6 @@ import com.solarsan.whiskyreviewer.review.dto.ReviewDTO;
 import com.solarsan.whiskyreviewer.reviewer.model.ReviewerEntity;
 import com.solarsan.whiskyreviewer.whisky.model.WhiskyEntity;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -19,8 +18,6 @@ import java.util.UUID;
 public class ReviewEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
@@ -41,6 +38,7 @@ public class ReviewEntity {
     public static ReviewEntity from(final ReviewerEntity reviewer, final WhiskyEntity whisky, final NewReviewDTO dto) {
         return ReviewEntity
                 .builder()
+                .id(UUID.randomUUID())
                 .score(dto.getScore())
                 .text(dto.getText())
                 .reviewer(reviewer)
