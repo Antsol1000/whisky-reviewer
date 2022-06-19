@@ -9,12 +9,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 import static com.solarsan.whiskyreviewer.common.ApiVersion.API_1_0;
+import static com.solarsan.whiskyreviewer.review.endpoints.ReviewEndpoints.*;
 
 @RestController
 @AllArgsConstructor
@@ -22,41 +24,46 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping(value = "/reviewer/{reviewer_id}/reviews", produces = {API_1_0})
+    @PostMapping(value = CREATE_REVIEW, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> createReview(
-            @PathVariable("reviewer_id") final UUID reviewerId,
+            @PathVariable(REVIEWER_ID) final UUID reviewerId,
             @RequestBody final NewReviewDTO reviewDto) {
         final IdResponseDTO id = reviewService.createReview(reviewerId, reviewDto);
-        return ResponseEntity.created(URI.create(String.format("/reviews/%s", id.getId()))).body(id);
+        final URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .replacePath(GET_REVIEW)
+                .buildAndExpand(id.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(id);
     }
 
-    @GetMapping(value = "/reviews", produces = {API_1_0})
+    @GetMapping(value = GET_REVIEWS, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDTO> getReviews() {
         return reviewService.getReviews();
     }
 
-    @GetMapping(value = "/whisky/{whisky_id}/reviews", produces = {API_1_0})
+    @GetMapping(value = GET_REVIEWS_FOR_WHISKY, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDTO> getReviewsForWhisky(
-            @PathVariable("whisky_id") final UUID whiskyId) {
+            @PathVariable(WHISKY_ID) final UUID whiskyId) {
         return reviewService.getReviewsForWhisky(whiskyId);
     }
 
-    @GetMapping(value = "/reviewer/{reviewer_id}/reviews", produces = {API_1_0})
+    @GetMapping(value = GET_REVIEWS_FOR_REVIEWER, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDTO> getReviewsForReviewer(
-            @PathVariable("reviewer_id") final UUID reviewerId) {
+            @PathVariable(REVIEWER_ID) final UUID reviewerId) {
         return reviewService.getReviewsForReviewer(reviewerId);
     }
 
-    @GetMapping(value = "/reviews/{id}", produces = {API_1_0})
+    @GetMapping(value = GET_REVIEW, produces = {API_1_0})
     public ResponseEntity<ReviewDTO> getReview(@PathVariable final UUID id) {
         return reviewService.getReview(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping(value = "/reviews/{id}", produces = {API_1_0})
+    @PutMapping(value = UPDATE_REVIEW, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> updateReview(
             @PathVariable final UUID id, @RequestBody final NewReviewDTO dto) {
         try {
@@ -66,7 +73,7 @@ public class ReviewController {
         }
     }
 
-    @DeleteMapping(value = "/reviews/{id}", produces = {API_1_0})
+    @DeleteMapping(value = DELETE_REVIEW, produces = {API_1_0})
     public ResponseEntity<Void> deleteReview(@PathVariable final UUID id) {
         try {
             reviewService.deleteReview(id);

@@ -15,6 +15,15 @@ configurations {
 	}
 }
 
+scmVersion {
+	tag {
+		initialVersion = {
+			config, position -> INITIAL_VERSION
+		}
+		prefix = 'release-'
+	}
+}
+
 repositories {
 	mavenCentral()
 }

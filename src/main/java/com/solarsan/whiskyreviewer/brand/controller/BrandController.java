@@ -9,11 +9,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import static com.solarsan.whiskyreviewer.brand.endpoints.BrandEndpoints.*;
 import static com.solarsan.whiskyreviewer.common.ApiVersion.API_1_0;
 
 @RestController
@@ -22,25 +24,31 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    @PostMapping(value = "/brands", produces = {API_1_0})
+    @PostMapping(value = CREATE_BRAND, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> createBrand(@RequestBody final NewBrandDTO brandDto) {
         final IdResponseDTO id = brandService.createBrand(brandDto);
-        return ResponseEntity.created(URI.create(String.format("/brands/%s", id.getId()))).body(id);
+        final URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .replacePath(GET_BRAND)
+                .buildAndExpand(id.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(id);
     }
 
-    @GetMapping(value = "/brands", produces = {API_1_0})
+    @GetMapping(value = GET_BRANDS, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
     public List<BrandDTO> getBrands() {
         return brandService.getBrands();
     }
 
-    @GetMapping(value = "/brands/{id}", produces = {API_1_0})
+    @GetMapping(value = GET_BRAND, produces = {API_1_0})
     public ResponseEntity<BrandDTO> getBrand(@PathVariable final UUID id) {
         return brandService.getBrand(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping(value = "/brands/{id}", produces = {API_1_0})
+    @PutMapping(value = UPDATE_BRAND, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> updateBrand(
             @PathVariable final UUID id, @RequestBody final NewBrandDTO dto) {
         try {
@@ -50,7 +58,7 @@ public class BrandController {
         }
     }
 
-    @DeleteMapping(value = "/brands/{id}", produces = {API_1_0})
+    @DeleteMapping(value = DELETE_BRAND, produces = {API_1_0})
     public ResponseEntity<Void> deleteBrand(@PathVariable final UUID id) {
         try {
             brandService.deleteBrand(id);

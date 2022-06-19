@@ -1,11 +1,16 @@
 package com.solarsan.whiskyreviewer.brand.controller;
 
-import com.solarsan.whiskyreviewer.ControllerTestBase;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solarsan.whiskyreviewer.brand.service.BrandService;
 import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.exceptions.BrandNotFoundException;
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
@@ -13,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.solarsan.whiskyreviewer.brand.BrandFixtures.*;
+import static com.solarsan.whiskyreviewer.brand.endpoints.BrandEndpoints.*;
 import static com.solarsan.whiskyreviewer.common.ApiVersion.API_1_0;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -21,7 +27,16 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class BrandControllerTest extends ControllerTestBase<BrandController> {
+@WebMvcTest(BrandController.class)
+class BrandControllerTest {
+
+    @Autowired
+    protected MockMvc mockMvc;
+    @Autowired
+    protected ObjectMapper objectMapper;
+
+    @MockBean
+    protected BrandService brandService;
 
     @Test
     void getsAllBrands() throws Exception {
@@ -29,7 +44,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
         doReturn(List.of(BRAND_1_DTO, BRAND_2_DTO)).when(brandService).getBrands();
 
         //when
-        final ResultActions result = mockMvc.perform(get("/brands"));
+        final ResultActions result = mockMvc.perform(get(GET_BRANDS));
 
         //then
         final MockHttpServletResponse response = result
@@ -45,7 +60,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
 
         //when
         final ResultActions result = mockMvc
-                .perform(get(String.format("/brands/%s", BRAND_1_ID)));
+                .perform(get(GET_BRAND.replace("{id}", BRAND_1_ID.toString())));
 
         //then
         final MockHttpServletResponse response = result
@@ -60,7 +75,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
         doReturn(Optional.empty()).when(brandService).getBrand(eq(BRAND_1_ID));
 
         //when & then
-        mockMvc.perform(get(String.format("/brands/%s", BRAND_1_ID)))
+        mockMvc.perform(get(GET_BRAND.replace("{id}", BRAND_1_ID.toString())))
                 .andExpect(status().isNotFound());
     }
 
@@ -72,14 +87,15 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
 
         //when
         final ResultActions result = mockMvc
-                .perform(post("/brands")
+                .perform(post(CREATE_BRAND)
                         .contentType(API_1_0)
                         .content(objectMapper.writeValueAsString(BRAND_1_NEW_DTO)));
 
         //then
         final MockHttpServletResponse response = result
                 .andExpect(status().isCreated()).andReturn().getResponse();
-        assertThat(response.getHeader("location")).isEqualTo(String.format("/brands/%s", BRAND_1_ID));
+        assertThat(response.getHeader("location"))
+                .isEqualTo("http://localhost" + GET_BRAND.replace("{id}", BRAND_1_ID.toString()));
         final UUID id = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
         assertThat(id).isEqualTo(BRAND_1_ID);
     }
@@ -91,7 +107,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
                 .when(brandService).updateBrandById(eq(BRAND_1_ID), eq(BRAND_1_NEW_DTO));
 
         //when
-        final ResultActions result = mockMvc.perform(put(String.format("/brands/%s", BRAND_1_ID))
+        final ResultActions result = mockMvc.perform(put(UPDATE_BRAND.replace("{id}", BRAND_1_ID.toString()))
                 .contentType(API_1_0)
                 .content(objectMapper.writeValueAsString(BRAND_1_NEW_DTO)));
 
@@ -108,7 +124,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
         doThrow(BrandNotFoundException.class).when(brandService).updateBrandById(eq(BRAND_1_ID), eq(BRAND_1_NEW_DTO));
 
         //when & then
-        mockMvc.perform(put(String.format("/brands/%s", BRAND_1_ID))
+        mockMvc.perform(put(UPDATE_BRAND.replace("{id}", BRAND_1_ID.toString()))
                         .contentType(API_1_0)
                         .content(objectMapper.writeValueAsString(BRAND_1_NEW_DTO)))
                 .andExpect(status().isNotFound());
@@ -117,7 +133,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
     @Test
     void deletesBrand() throws Exception {
         //when & then
-        mockMvc.perform(delete(String.format("/brands/%s", BRAND_1_ID))
+        mockMvc.perform(delete(DELETE_BRAND.replace("{id}", BRAND_1_ID.toString()))
                         .contentType(API_1_0)
                         .content(objectMapper.writeValueAsString(BRAND_1_NEW_DTO)))
                 .andExpect(status().isNoContent());
@@ -129,7 +145,7 @@ class BrandControllerTest extends ControllerTestBase<BrandController> {
         doThrow(BrandNotFoundException.class).when(brandService).deleteBrand(eq(BRAND_1_ID));
 
         //when & then
-        mockMvc.perform(delete(String.format("/brands/%s", BRAND_1_ID)))
+        mockMvc.perform(delete(DELETE_BRAND.replace("{id}", BRAND_1_ID.toString())))
                 .andExpect(status().isNotFound());
     }
 

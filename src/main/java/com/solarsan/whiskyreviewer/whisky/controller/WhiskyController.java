@@ -9,12 +9,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 import static com.solarsan.whiskyreviewer.common.ApiVersion.API_1_0;
+import static com.solarsan.whiskyreviewer.whisky.endpoints.WhiskyEndpoints.*;
 
 @RestController
 @AllArgsConstructor
@@ -22,39 +24,40 @@ public class WhiskyController {
 
     private final WhiskyService whiskyService;
 
-    @PostMapping(value = "/brands/{brand_id}/whiskies", produces = {API_1_0})
+    @PostMapping(value = CREATE_WHISKY, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> createWhisky(
-            @PathVariable("brand_id") final UUID brandId,
+            @PathVariable(BRAND_ID) final UUID brandId,
             @RequestBody final NewWhiskyDTO whiskyDto) {
         final IdResponseDTO id = whiskyService.createWhisky(brandId, whiskyDto);
-        return ResponseEntity
-                .created(URI.create(String.format("/brands/%s/whiskies/%s", brandId.toString(), id.getId())))
-                .body(id);
+        final URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .replacePath(GET_WHISKY)
+                .buildAndExpand(id.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(id);
     }
 
-    @GetMapping(value = "/whiskies", produces = {API_1_0})
+    @GetMapping(value = GET_WHISKIES, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
     public List<WhiskyDTO> getWhiskies() {
         return whiskyService.getWhiskies();
     }
 
-    @GetMapping(value = "/brands/{brand_id}/whiskies", produces = {API_1_0})
+    @GetMapping(value = GET_WHISKIES_FOR_BRAND, produces = {API_1_0})
     @ResponseStatus(HttpStatus.OK)
-    public List<WhiskyDTO> getWhiskiesForBrand(
-            @PathVariable("brand_id") final UUID brandId) {
+    public List<WhiskyDTO> getWhiskiesForBrand(@PathVariable(BRAND_ID) final UUID brandId) {
         return whiskyService.getWhiskiesForBrand(brandId);
     }
 
-    @GetMapping(value = "/whiskies/{id}", produces = {API_1_0})
-    public ResponseEntity<WhiskyDTO> getWhisky(
-            @PathVariable("id") final UUID id) {
+    @GetMapping(value = GET_WHISKY, produces = {API_1_0})
+    public ResponseEntity<WhiskyDTO> getWhisky(@PathVariable final UUID id) {
         return whiskyService.getWhisky(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping(value = "/whiskies/{id}", produces = {API_1_0})
+    @PutMapping(value = UPDATE_WHISKY, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> updateWhisky(
-            @PathVariable("id") final UUID id,
+            @PathVariable final UUID id,
             @RequestBody final NewWhiskyDTO dto) {
         try {
             return ResponseEntity.ok().body(whiskyService.updateWhiskyById(id, dto));
@@ -63,9 +66,8 @@ public class WhiskyController {
         }
     }
 
-    @DeleteMapping(value = "/whiskies/{id}", produces = {API_1_0})
-    public ResponseEntity<Void> deleteWhisky(
-            @PathVariable final UUID id) {
+    @DeleteMapping(value = DELETE_WHISKY, produces = {API_1_0})
+    public ResponseEntity<Void> deleteWhisky(@PathVariable final UUID id) {
         try {
             whiskyService.deleteWhisky(id);
             return ResponseEntity.noContent().build();

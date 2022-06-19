@@ -1,11 +1,10 @@
-package com.solarsan.whiskyreviewer;
+package com.solarsan.whiskyreviewer.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solarsan.whiskyreviewer.WhiskyReviewerApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +16,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.util.Arrays;
 import java.util.List;
 
-@DataJpaTest
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(
         classes = WhiskyReviewerApplication.class,
@@ -34,9 +32,6 @@ public abstract class PostgresTestBase {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    protected ObjectMapper objectMapper;
 
     @BeforeEach
     void cleanUpDb() {

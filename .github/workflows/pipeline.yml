@@ -27,4 +27,4 @@ jobs:
         files: "build/test-results/**/*.xml"
     - name: Gradle release
       if: github.ref == 'refs/heads/master'
-      run: ./gradlew release -x test
+      run: "./gradlew release -x test -Prelease.disableChecks -Prelease.pushTagsOnly -Prelease.customUsername=${{ secrets.GITHUB_USER }} -Prelease.customPassword=${{ secrets.GITHUB_ACCESS_TOKEN }}"

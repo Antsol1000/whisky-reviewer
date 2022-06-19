@@ -1,6 +1,6 @@
 package com.solarsan.whiskyreviewer.brand.service;
 
-import com.solarsan.whiskyreviewer.PostgresTestBase;
+import com.solarsan.whiskyreviewer.common.PostgresTestBase;
 import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.exceptions.BrandNotFoundException;
 import com.solarsan.whiskyreviewer.brand.repository.BrandRepositoryManager;
