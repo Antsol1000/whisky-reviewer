@@ -45,10 +45,10 @@ public class WhiskyRepositoryManager {
     public IdResponseDTO update(final UUID id, final NewWhiskyDTO dto) {
         final WhiskyEntity entity =
                 whiskyRepository.findById(id).orElseThrow(() -> new WhiskyNotFoundException(id.toString()));
-        entity.setName(dto.getName());
-        entity.setAlcohol(dto.getAlcohol());
-        entity.setType(dto.getType());
-        entity.setAge(dto.getAge());
+        entity.setName(dto.name());
+        entity.setAlcohol(dto.alcohol());
+        entity.setType(dto.type());
+        entity.setAge(dto.age());
         final WhiskyEntity saved = whiskyRepository.save(entity);
         return IdResponseDTO.builder().id(saved.getId()).build();
     }

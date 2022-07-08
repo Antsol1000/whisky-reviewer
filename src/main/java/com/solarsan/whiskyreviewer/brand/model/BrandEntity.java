@@ -29,11 +29,11 @@ public class BrandEntity {
     private String country;
 
     public static BrandEntity from(final NewBrandDTO dto) {
-        return BrandEntity.builder().id(UUID.randomUUID()).name(dto.getName()).country(dto.getCountry()).build();
+        return BrandEntity.builder().id(UUID.randomUUID()).name(dto.name()).country(dto.country()).build();
     }
 
     public static BrandEntity from(final BrandDTO dto) {
-        return BrandEntity.builder().id(dto.getId()).name(dto.getName()).country(dto.getCountry()).build();
+        return BrandEntity.builder().id(dto.id()).name(dto.name()).country(dto.country()).build();
     }
 
 }

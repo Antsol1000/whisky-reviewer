@@ -8,16 +8,9 @@ import lombok.Value;
 
 import java.util.UUID;
 
-@Value
-@Builder
-@JsonDeserialize(builder = ReviewerDTO.ReviewerDTOBuilder.class)
-public class ReviewerDTO {
-
-    @JsonProperty("id")
-    UUID id;
-
-    @JsonProperty("name")
-    String name;
+public record ReviewerDTO(
+        @JsonProperty("id") UUID id,
+        @JsonProperty("name") String name) {
 
     public static ReviewerDTO from(final ReviewerEntity entity) {
         return new ReviewerDTO(entity.getId(), entity.getName());

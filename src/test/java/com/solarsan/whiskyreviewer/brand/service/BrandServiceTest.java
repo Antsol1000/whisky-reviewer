@@ -70,8 +70,8 @@ class BrandServiceTest extends PostgresTestBase {
         //then
         final Optional<BrandDTO> maybeBrand = brandService.getBrand(id.getId());
         assertThat(maybeBrand).isPresent();
-        assertThat(maybeBrand.get().getName()).isEqualTo(BRAND_1_NAME);
-        assertThat(maybeBrand.get().getCountry()).isEqualTo(BRAND_1_COUNTRY);
+        assertThat(maybeBrand.get().name()).isEqualTo(BRAND_1_NAME);
+        assertThat(maybeBrand.get().country()).isEqualTo(BRAND_1_COUNTRY);
     }
 
     @Test
@@ -85,8 +85,8 @@ class BrandServiceTest extends PostgresTestBase {
         //then
         final Optional<BrandDTO> maybeBrand = brandService.getBrand(id.getId());
         assertThat(maybeBrand).isPresent();
-        assertThat(maybeBrand.get().getName()).isEqualTo(BRAND_2_NAME);
-        assertThat(maybeBrand.get().getCountry()).isEqualTo(BRAND_2_COUNTRY);
+        assertThat(maybeBrand.get().name()).isEqualTo(BRAND_2_NAME);
+        assertThat(maybeBrand.get().country()).isEqualTo(BRAND_2_COUNTRY);
     }
 
     @Test

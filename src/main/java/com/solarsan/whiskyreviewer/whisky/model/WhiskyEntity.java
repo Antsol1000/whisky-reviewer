@@ -40,10 +40,10 @@ public class WhiskyEntity {
         return WhiskyEntity
                 .builder()
                 .id(UUID.randomUUID())
-                .name(dto.getName())
-                .alcohol(dto.getAlcohol())
-                .type(dto.getType())
-                .age(dto.getAge())
+                .name(dto.name())
+                .alcohol(dto.alcohol())
+                .type(dto.type())
+                .age(dto.age())
                 .brand(brand)
                 .build();
     }
@@ -51,11 +51,11 @@ public class WhiskyEntity {
     public static WhiskyEntity from(final WhiskyDTO dto) {
         return WhiskyEntity
                 .builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .alcohol(dto.getAlcohol())
-                .type(dto.getType())
-                .age(dto.getAge())
+                .id(dto.id())
+                .name(dto.name())
+                .alcohol(dto.alcohol())
+                .type(dto.type())
+                .age(dto.age())
                 .build();
     }
 }

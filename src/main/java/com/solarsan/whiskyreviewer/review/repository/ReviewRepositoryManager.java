@@ -51,8 +51,8 @@ public class ReviewRepositoryManager {
     public IdResponseDTO update(final UUID id, final NewReviewDTO dto) {
         final ReviewEntity entity =
                 reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(id.toString()));
-        entity.setScore(dto.getScore());
-        entity.setText(dto.getText());
+        entity.setScore(dto.score());
+        entity.setText(dto.text());
         final ReviewEntity saved = reviewRepository.save(entity);
         return IdResponseDTO.builder().id(saved.getId()).build();
     }

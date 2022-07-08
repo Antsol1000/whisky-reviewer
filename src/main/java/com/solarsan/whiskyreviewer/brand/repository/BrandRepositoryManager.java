@@ -38,8 +38,8 @@ public class BrandRepositoryManager {
     public BrandEntity update(final UUID id, final NewBrandDTO dto) {
         final BrandEntity entity =
                 brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException(id.toString()));
-        entity.setName(dto.getName());
-        entity.setCountry(dto.getCountry());
+        entity.setName(dto.name());
+        entity.setCountry(dto.country());
         return brandRepository.save(entity);
     }
 

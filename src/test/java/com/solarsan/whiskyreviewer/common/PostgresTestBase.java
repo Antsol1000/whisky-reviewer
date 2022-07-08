@@ -24,7 +24,7 @@ import java.util.List;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class PostgresTestBase {
 
-    private static final String DOCKER_IMAGE_NAME = "postgres:12-alpine";
+    private static final String DOCKER_IMAGE_NAME = "postgres:14-alpine";
 
     private static final PostgreSQLContainer<?> DB_CONTAINER = new PostgreSQLContainer<>(DOCKER_IMAGE_NAME);
 

@@ -39,8 +39,8 @@ public class ReviewEntity {
         return ReviewEntity
                 .builder()
                 .id(UUID.randomUUID())
-                .score(dto.getScore())
-                .text(dto.getText())
+                .score(dto.score())
+                .text(dto.text())
                 .reviewer(reviewer)
                 .whisky(whisky)
                 .build();
@@ -49,9 +49,9 @@ public class ReviewEntity {
     public static ReviewEntity from(final ReviewDTO dto) {
         return ReviewEntity
                 .builder()
-                .id(dto.getId())
-                .score(dto.getScore())
-                .text(dto.getText())
+                .id(dto.id())
+                .score(dto.score())
+                .text(dto.text())
                 .build();
     }
 }

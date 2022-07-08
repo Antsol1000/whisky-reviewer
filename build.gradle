@@ -13,7 +13,7 @@ scmVersion {
 
 project.group = ARTIFACT_GROUP
 project.version = scmVersion.version
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_17
 
 configurations {
 	compileOnly {

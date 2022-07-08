@@ -26,11 +26,11 @@ public class ReviewerEntity {
     private String name;
 
     public static ReviewerEntity from(final NewReviewerDTO dto) {
-        return ReviewerEntity.builder().id(UUID.randomUUID()).name(dto.getName()).build();
+        return ReviewerEntity.builder().id(UUID.randomUUID()).name(dto.name()).build();
     }
 
     public static ReviewerEntity from(final ReviewerDTO dto) {
-        return ReviewerEntity.builder().id(dto.getId()).name(dto.getName()).build();
+        return ReviewerEntity.builder().id(dto.id()).name(dto.name()).build();
     }
 
 }

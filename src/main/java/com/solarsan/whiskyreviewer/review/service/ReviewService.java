@@ -28,7 +28,7 @@ public class ReviewService {
     @Transactional
     public IdResponseDTO createReview(final UUID reviewerId, final NewReviewDTO dto) {
         final ReviewerEntity reviewerEntity = entityFetcher.getReviewerEntity(reviewerId);
-        final WhiskyEntity whiskyEntity = entityFetcher.getWhiskyEntity(dto.getWhiskyId());
+        final WhiskyEntity whiskyEntity = entityFetcher.getWhiskyEntity(dto.whiskyId());
         final ReviewEntity entity = ReviewEntity.from(reviewerEntity, whiskyEntity, dto);
         final ReviewEntity saved = repositoryManager.save(entity);
         log.info("Created new review with id {} for whisky {} by reviewer {}",

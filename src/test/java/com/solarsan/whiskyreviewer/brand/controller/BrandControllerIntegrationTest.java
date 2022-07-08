@@ -55,14 +55,15 @@ class BrandControllerIntegrationTest extends ControllerIntegrationTestBase {
                 .andReturn().getResponse();
 
         final BrandDTO brand1 = objectMapper.readValue(response.getContentAsString(), BrandDTO.class);
-        assertThat(brand1.getName()).isEqualTo(BRAND_1_NAME);
-        assertThat(brand1.getCountry()).isEqualTo(BRAND_1_COUNTRY);
+        assertThat(brand1.name()).isEqualTo(BRAND_1_NAME);
+        assertThat(brand1.country()).isEqualTo(BRAND_1_COUNTRY);
 
         // update 1st brand
+        final String newCountry = "new country";
         response = mockMvc
                 .perform(put(UPDATE_BRAND.replace("{id}", id1.toString()))
                         .contentType(API_1_0).content(objectMapper.writeValueAsString(
-                                NewBrandDTO.builder().name(BRAND_1_NAME).country("new country").build())))
+                                new NewBrandDTO(BRAND_1_NAME, newCountry))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
@@ -76,8 +77,8 @@ class BrandControllerIntegrationTest extends ControllerIntegrationTestBase {
                 .andReturn().getResponse();
 
         final BrandDTO brandAfterUpdate = objectMapper.readValue(response.getContentAsString(), BrandDTO.class);
-        assertThat(brandAfterUpdate.getName()).isEqualTo(BRAND_1_NAME);
-        assertThat(brandAfterUpdate.getCountry()).isEqualTo("new country");
+        assertThat(brandAfterUpdate.name()).isEqualTo(BRAND_1_NAME);
+        assertThat(brandAfterUpdate.country()).isEqualTo(newCountry);
 
         // delete 1st brand
         mockMvc

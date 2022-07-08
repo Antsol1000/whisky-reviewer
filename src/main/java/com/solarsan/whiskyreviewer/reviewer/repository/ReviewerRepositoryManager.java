@@ -38,7 +38,7 @@ public class ReviewerRepositoryManager {
     public ReviewerEntity update(final UUID id, final NewReviewerDTO dto) {
         final ReviewerEntity entity =
                 reviewerRepository.findById(id).orElseThrow(() -> new ReviewerNotFoundException(id.toString()));
-        entity.setName(dto.getName());
+        entity.setName(dto.name());
         return reviewerRepository.save(entity);
     }
 
