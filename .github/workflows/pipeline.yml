@@ -27,6 +27,8 @@ jobs:
         files: "build/test-results/**/*.xml"
     - name: Gradle current version
       run: "./gradlew cV"
+    - name: Get tags
+      run: "git tag"
     - name: Gradle release
       if: github.ref == 'refs/heads/master'
       run: "./gradlew release -x test -Prelease.customUsername=${{ secrets.GITHUB_USER }} -Prelease.customPassword=${{ secrets.GITHUB_ACCESS_TOKEN }}"

@@ -5,12 +5,6 @@ plugins {
 	id 'pl.allegro.tech.build.axion-release' version '1.13.6'
 }
 
-scmVersion {
-	tag {
-		prefix = 'release-'
-	}
-}
-
 project.group = ARTIFACT_GROUP
 project.version = scmVersion.version
 sourceCompatibility = JavaVersion.VERSION_17
