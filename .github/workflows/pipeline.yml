@@ -19,12 +19,14 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
     - name: Build and test with Gradle
-      run: ./gradlew clean build test
+      run: "./gradlew clean build test"
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
         files: "build/test-results/**/*.xml"
+    - name: Gradle current version
+      run: "./gradlew cV"
     - name: Gradle release
       if: github.ref == 'refs/heads/master'
-      run: "./gradlew release -x test -Prelease.disableChecks -Prelease.pushTagsOnly -Prelease.customUsername=${{ secrets.GITHUB_USER }} -Prelease.customPassword=${{ secrets.GITHUB_ACCESS_TOKEN }}"
+      run: "./gradlew release -x test -Prelease.customUsername=${{ secrets.GITHUB_USER }} -Prelease.customPassword=${{ secrets.GITHUB_ACCESS_TOKEN }}"
