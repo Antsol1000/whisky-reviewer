@@ -26,13 +26,13 @@ public class ReviewerController {
 
     @PostMapping(value = CREATE_REVIEWER, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> createReviewer(@RequestBody final NewReviewerDTO reviewerDto) {
-        final IdResponseDTO id = reviewerService.createReviewer(reviewerDto);
+        final IdResponseDTO idResponseDTO = reviewerService.createReviewer(reviewerDto);
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .replacePath(GET_REVIEWER)
-                .buildAndExpand(id.getId())
+                .buildAndExpand(idResponseDTO.id())
                 .toUri();
-        return ResponseEntity.created(location).body(id);
+        return ResponseEntity.created(location).body(idResponseDTO);
     }
 
     @GetMapping(value = GET_REVIEWERS, produces = {API_1_0})

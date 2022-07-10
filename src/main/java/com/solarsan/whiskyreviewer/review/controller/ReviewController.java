@@ -28,13 +28,13 @@ public class ReviewController {
     public ResponseEntity<IdResponseDTO> createReview(
             @PathVariable(REVIEWER_ID) final UUID reviewerId,
             @RequestBody final NewReviewDTO reviewDto) {
-        final IdResponseDTO id = reviewService.createReview(reviewerId, reviewDto);
+        final IdResponseDTO idResponseDTO = reviewService.createReview(reviewerId, reviewDto);
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .replacePath(GET_REVIEW)
-                .buildAndExpand(id.getId())
+                .buildAndExpand(idResponseDTO.id())
                 .toUri();
-        return ResponseEntity.created(location).body(id);
+        return ResponseEntity.created(location).body(idResponseDTO);
     }
 
     @GetMapping(value = GET_REVIEWS, produces = {API_1_0})

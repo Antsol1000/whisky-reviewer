@@ -33,7 +33,7 @@ public class ReviewService {
         final ReviewEntity saved = repositoryManager.save(entity);
         log.info("Created new review with id {} for whisky {} by reviewer {}",
                 saved.getId(), saved.getWhisky().getName(), saved.getReviewer().getName());
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return new IdResponseDTO(saved.getId());
     }
 
     public List<ReviewDTO> getReviews() {
@@ -56,7 +56,7 @@ public class ReviewService {
     @Transactional
     public IdResponseDTO updateReviewById(final UUID id, final NewReviewDTO reviewDTO) {
         final IdResponseDTO response = repositoryManager.update(id, reviewDTO);
-        log.info("Updated review with id {}", response.getId());
+        log.info("Updated review with id {}", response.id());
         return response;
     }
 

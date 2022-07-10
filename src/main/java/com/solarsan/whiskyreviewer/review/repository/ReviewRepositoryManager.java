@@ -54,7 +54,7 @@ public class ReviewRepositoryManager {
         entity.setScore(dto.score());
         entity.setText(dto.text());
         final ReviewEntity saved = reviewRepository.save(entity);
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return new IdResponseDTO(saved.getId());
     }
 
     public void delete(final UUID id) {

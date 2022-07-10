@@ -50,7 +50,7 @@ public class WhiskyRepositoryManager {
         entity.setType(dto.type());
         entity.setAge(dto.age());
         final WhiskyEntity saved = whiskyRepository.save(entity);
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return new IdResponseDTO(saved.getId());
     }
 
     public void delete(final UUID id) {

@@ -28,7 +28,7 @@ class BrandControllerIntegrationTest extends ControllerIntegrationTestBase {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse();
 
-        final UUID id1 = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
+        final UUID id1 = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).id();
 
         // create 2nd brand
         response = mockMvc
@@ -37,7 +37,7 @@ class BrandControllerIntegrationTest extends ControllerIntegrationTestBase {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse();
 
-        final UUID id2 = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
+        final UUID id2 = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).id();
 
         // get brands
         response = mockMvc
@@ -67,7 +67,7 @@ class BrandControllerIntegrationTest extends ControllerIntegrationTestBase {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
-        final UUID idAfterUpdate = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
+        final UUID idAfterUpdate = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).id();
         assertThat(id1).isEqualTo(idAfterUpdate);
 
         // get 1st brand by id

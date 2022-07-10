@@ -1,10 +1,10 @@
 package com.solarsan.whiskyreviewer.brand.service;
 
-import com.solarsan.whiskyreviewer.common.PostgresTestBase;
 import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.exceptions.BrandNotFoundException;
 import com.solarsan.whiskyreviewer.brand.repository.BrandRepositoryManager;
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
+import com.solarsan.whiskyreviewer.common.PostgresTestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,10 +65,10 @@ class BrandServiceTest extends PostgresTestBase {
     @Test
     void createsBrand() {
         //when
-        final IdResponseDTO id = brandService.createBrand(BRAND_1_NEW_DTO);
+        final IdResponseDTO idResponseDTO = brandService.createBrand(BRAND_1_NEW_DTO);
 
         //then
-        final Optional<BrandDTO> maybeBrand = brandService.getBrand(id.getId());
+        final Optional<BrandDTO> maybeBrand = brandService.getBrand(idResponseDTO.id());
         assertThat(maybeBrand).isPresent();
         assertThat(maybeBrand.get().name()).isEqualTo(BRAND_1_NAME);
         assertThat(maybeBrand.get().country()).isEqualTo(BRAND_1_COUNTRY);
@@ -80,10 +80,10 @@ class BrandServiceTest extends PostgresTestBase {
         brandRepositoryManager.save(BRAND_1_ENTITY);
 
         //when
-        final IdResponseDTO id = brandService.updateBrandById(BRAND_1_ID, BRAND_2_NEW_DTO);
+        final IdResponseDTO idResponseDTO = brandService.updateBrandById(BRAND_1_ID, BRAND_2_NEW_DTO);
 
         //then
-        final Optional<BrandDTO> maybeBrand = brandService.getBrand(id.getId());
+        final Optional<BrandDTO> maybeBrand = brandService.getBrand(idResponseDTO.id());
         assertThat(maybeBrand).isPresent();
         assertThat(maybeBrand.get().name()).isEqualTo(BRAND_2_NAME);
         assertThat(maybeBrand.get().country()).isEqualTo(BRAND_2_COUNTRY);

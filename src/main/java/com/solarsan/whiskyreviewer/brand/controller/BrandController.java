@@ -26,14 +26,14 @@ public class BrandController {
 
     @PostMapping(value = CREATE_BRAND, produces = {API_1_0})
     public ResponseEntity<IdResponseDTO> createBrand(@RequestBody final NewBrandDTO brandDto) {
-        final IdResponseDTO id = brandService.createBrand(brandDto);
+        final IdResponseDTO idResponseDTO = brandService.createBrand(brandDto);
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .replacePath(GET_BRAND)
-                .buildAndExpand(id.getId())
+                .buildAndExpand(idResponseDTO.id())
                 .toUri();
 
-        return ResponseEntity.created(location).body(id);
+        return ResponseEntity.created(location).body(idResponseDTO);
     }
 
     @GetMapping(value = GET_BRANDS, produces = {API_1_0})

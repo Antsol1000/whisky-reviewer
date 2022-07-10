@@ -28,13 +28,13 @@ public class WhiskyController {
     public ResponseEntity<IdResponseDTO> createWhisky(
             @PathVariable(BRAND_ID) final UUID brandId,
             @RequestBody final NewWhiskyDTO whiskyDto) {
-        final IdResponseDTO id = whiskyService.createWhisky(brandId, whiskyDto);
+        final IdResponseDTO idResponseDTO = whiskyService.createWhisky(brandId, whiskyDto);
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .replacePath(GET_WHISKY)
-                .buildAndExpand(id.getId())
+                .buildAndExpand(idResponseDTO.id())
                 .toUri();
-        return ResponseEntity.created(location).body(id);
+        return ResponseEntity.created(location).body(idResponseDTO);
     }
 
     @GetMapping(value = GET_WHISKIES, produces = {API_1_0})

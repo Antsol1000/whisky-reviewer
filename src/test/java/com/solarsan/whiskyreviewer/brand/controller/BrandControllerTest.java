@@ -1,9 +1,9 @@
 package com.solarsan.whiskyreviewer.brand.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solarsan.whiskyreviewer.brand.service.BrandService;
 import com.solarsan.whiskyreviewer.brand.dto.BrandDTO;
 import com.solarsan.whiskyreviewer.brand.exceptions.BrandNotFoundException;
+import com.solarsan.whiskyreviewer.brand.service.BrandService;
 import com.solarsan.whiskyreviewer.common.IdResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,8 +82,7 @@ class BrandControllerTest {
     @Test
     void createsBrand() throws Exception {
         //given
-        doReturn(IdResponseDTO.builder().id(BRAND_1_ID).build())
-                .when(brandService).createBrand(eq(BRAND_1_NEW_DTO));
+        doReturn(new IdResponseDTO(BRAND_1_ID)).when(brandService).createBrand(eq(BRAND_1_NEW_DTO));
 
         //when
         final ResultActions result = mockMvc
@@ -96,15 +95,14 @@ class BrandControllerTest {
                 .andExpect(status().isCreated()).andReturn().getResponse();
         assertThat(response.getHeader("location"))
                 .isEqualTo("http://localhost" + GET_BRAND.replace("{id}", BRAND_1_ID.toString()));
-        final UUID id = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
+        final UUID id = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).id();
         assertThat(id).isEqualTo(BRAND_1_ID);
     }
 
     @Test
     void updatesBrand() throws Exception {
         //given
-        doReturn(IdResponseDTO.builder().id(BRAND_1_ID).build())
-                .when(brandService).updateBrandById(eq(BRAND_1_ID), eq(BRAND_1_NEW_DTO));
+        doReturn(new IdResponseDTO(BRAND_1_ID)).when(brandService).updateBrandById(eq(BRAND_1_ID), eq(BRAND_1_NEW_DTO));
 
         //when
         final ResultActions result = mockMvc.perform(put(UPDATE_BRAND.replace("{id}", BRAND_1_ID.toString()))
@@ -114,7 +112,7 @@ class BrandControllerTest {
         //then
         final MockHttpServletResponse response =
                 result.andExpect(status().isOk()).andReturn().getResponse();
-        final UUID id = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).getId();
+        final UUID id = objectMapper.readValue(response.getContentAsString(), IdResponseDTO.class).id();
         assertThat(id).isEqualTo(BRAND_1_ID);
     }
 

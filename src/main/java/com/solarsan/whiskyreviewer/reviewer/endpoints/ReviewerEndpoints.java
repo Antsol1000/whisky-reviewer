@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 public class ReviewerEndpoints {
 
     private static final String REVIEWERS = "/reviewers";
-    private static final String REVIEWERS_WITH_ID = REVIEWERS + "/{id}";
-
     public static final String GET_REVIEWERS = REVIEWERS;
     public static final String CREATE_REVIEWER = REVIEWERS;
+    private static final String REVIEWERS_WITH_ID = REVIEWERS + "/{id}";
     public static final String GET_REVIEWER = REVIEWERS_WITH_ID;
     public static final String UPDATE_REVIEWER = REVIEWERS_WITH_ID;
     public static final String DELETE_REVIEWER = REVIEWERS_WITH_ID;

@@ -31,7 +31,7 @@ public class WhiskyService {
         final WhiskyEntity saved = repositoryManager.save(entity);
         log.info("Created new whisky {} with id {} for brand {}",
                 saved.getName(), saved.getId(), saved.getBrand().getName());
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return new IdResponseDTO(saved.getId());
     }
 
     public List<WhiskyDTO> getWhiskies() {
@@ -49,7 +49,7 @@ public class WhiskyService {
     @Transactional
     public IdResponseDTO updateWhiskyById(final UUID id, final NewWhiskyDTO whiskyDTO) {
         final IdResponseDTO response = repositoryManager.update(id, whiskyDTO);
-        log.info("Updated whisky with id {}", response.getId());
+        log.info("Updated whisky with id {}", response.id());
         return response;
     }
 

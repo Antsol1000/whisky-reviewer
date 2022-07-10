@@ -26,7 +26,7 @@ public class BrandService {
         final BrandEntity entity = BrandEntity.from(dto);
         final BrandEntity saved = repositoryManager.save(entity);
         log.info("Created new brand {} with id {}", saved.getName(), saved.getId());
-        return IdResponseDTO.builder().id(saved.getId()).build();
+        return new IdResponseDTO(saved.getId());
     }
 
     public List<BrandDTO> getBrands() {
@@ -41,7 +41,7 @@ public class BrandService {
     public IdResponseDTO updateBrandById(final UUID id, final NewBrandDTO brandDTO) {
         final BrandEntity updated = repositoryManager.update(id, brandDTO);
         log.info("Updated brand with id {}", updated.getId());
-        return IdResponseDTO.builder().id(updated.getId()).build();
+        return new IdResponseDTO(updated.getId());
     }
 
     @Transactional
